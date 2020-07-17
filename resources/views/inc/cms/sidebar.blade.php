@@ -68,6 +68,12 @@
                                     <p>Spp</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('students.index') }}" class="nav-link {{ Request::is('cms/master/students') ? 'active' : '' }}">
+                                    <i class="fas fa-users nav-icon"></i>
+                                    <p>Siswa</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif

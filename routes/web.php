@@ -59,6 +59,10 @@ Route::group([
             // Spp
             Route::get('spp/datatables', 'SppController@sppDataTables')->name('spp.datatables');
             Route::resource('spp', 'SppController');
+
+            // Student
+            Route::get('students/datatables', 'StudentController@studentDataTables')->name('students.datatables');
+            Route::resource('students', 'StudentController');
         });
     });
 });
