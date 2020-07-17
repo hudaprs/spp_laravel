@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Grade extends Model
+class Spp extends Model
 {
+    protected $table = "spp";
+
     protected $fillable = [
-        "name",
-        "major"
+        'year',
+        'nominal'
     ];
 
     public function students()

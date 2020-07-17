@@ -5,12 +5,11 @@ namespace App\Http\Controllers\CMS\Master;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Models\Grade;
+use App\Models\Spp;
 use DB;
 use DataTables;
 
-
-class GradeController extends Controller
+class SppController extends Controller
 {
     public function __construct()
     {
@@ -18,26 +17,26 @@ class GradeController extends Controller
         $this->middleware(function($request, $next) {
             if(Gate::allows('is_high_admin')) return $next($request);
             abort(403, config('globalvar.high_admin_gate_message'));
-        }, ['except' => ['gradeDataTables']]);
+        }, ['except' => ['sppDataTables']]);
     }
-
-    public function gradeDataTables(Request $request)
+    
+    public function sppDataTables(Request $request)
     {
-        $grades = Grade::query();
+        $spps = Spp::query();
 
         // Check if request is ajax
         if($request->ajax()) {
-            return DataTables::of($grades)
-                ->addColumn('action', function($grade) {
+            return DataTables::of($spps)
+                ->addColumn('action', function($spp) {
                     return view('inc.cms._action', [
-                        'model' => $grade,
-                        'url_show' => route('grades.show', $grade->id),
-                        'url_edit' => route('grades.edit', $grade->id),
-                        'url_destroy' => route('grades.destroy', $grade->id)
+                        'model' => $spp,
+                        'url_show' => route('spp.show', $spp->id),
+                        'url_edit' => route('spp.edit', $spp->id),
+                        'url_destroy' => route('spp.destroy', $spp->id)
                     ]);
                 })
-                ->addColumn('concat', function($grade) {
-                    return $grade->name . '-' . $grade->major;
+                ->editColumn('nominal', function($spp) {
+                    return "Rp. " . number_format($spp->nominal);
                 })
                 ->addIndexColumn()
                 ->rawColumns(['action'])
@@ -47,23 +46,23 @@ class GradeController extends Controller
         }
     }
 
-    public function gradeRequest(Request $request, $id = null)
+    public function sppRequest(Request $request, $id = null)
     {
         $request->validate([
-            'nama' => 'required',
-            'jurusan' => 'required'
+            'tahun' => 'required|max:11',
+            'nominal' => 'required|max:11'
         ]);
 
         DB::beginTransaction();
         try {
-            $grade = $id ? Grade::findOrFail($id) : new Grade;
-            $grade->name = $request->nama;
-            $grade->major = $request->jurusan;
-            $grade->save();
+            $spp = $id ? Spp::findOrFail($id) : new Spp;
+            $spp->year = $request->tahun;
+            $spp->nominal = $request->nominal;
+            $spp->save();
 
             DB::commit();
             return response()->json([
-                'message' => $id ? 'Kelas berhasil diubah' : 'Kelas berhasil dibuat'
+                'message' => $id ? 'Spp berhasil diubah' : 'Spp berhasil dibuat'
             ], $id ? 200 : 201);
         } catch(\Exception $e) {
             DB::rollBack();
@@ -80,7 +79,7 @@ class GradeController extends Controller
      */
     public function index()
     {
-        return view('cms.master.grades.index');
+        return view('cms.master.spp.index');
     }
 
     /**
@@ -90,8 +89,8 @@ class GradeController extends Controller
      */
     public function create()
     {
-        $grade = new Grade;
-        return view('cms.master.grades.create', compact('grade'));
+        $spp = new Spp;
+        return view('cms.master.spp.create', compact('spp'));
     }
 
     /**
@@ -102,7 +101,7 @@ class GradeController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->gradeRequest($request);
+        return $this->sppRequest($request);
     }
 
     /**
@@ -113,8 +112,8 @@ class GradeController extends Controller
      */
     public function show($id)
     {
-        $grade = Grade::findOrFail($id);
-        return view('cms.master.grades.show', compact('grade'));
+        $spp = Spp::findOrFail($id);
+        return view('cms.master.spp.show', compact('spp'));
     }
 
     /**
@@ -125,8 +124,8 @@ class GradeController extends Controller
      */
     public function edit($id)
     {
-        $grade = Grade::findOrFail($id);
-        return view('cms.master.grades.create', compact('grade'));
+        $spp = Spp::findOrFail($id);
+        return view('cms.master.spp.create', compact('spp'));
     }
 
     /**
@@ -138,7 +137,7 @@ class GradeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->gradeRequest($request, $id);
+        return $this->sppRequest($request, $id);
     }
 
     /**
@@ -151,11 +150,11 @@ class GradeController extends Controller
     {
         DB::beginTransaction();
         try {
-            $grade = Grade::findOrFail($id);
-            $grade->delete();
+            $spp = Spp::findOrFail($id);
+            $spp->delete();
 
             DB::commit();
-            return response()->json(['message' => 'Kelas berhasil dihapus'], 200);
+            return response()->json(['message' => 'Spp berhasil dihapus'], 200);
         } catch(\Exception $e) {
             DB::rollBack();
             return response()->json(['message'=> $e->getMessage()], 500);

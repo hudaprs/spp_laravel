@@ -4,19 +4,12 @@
 @section('header-title', 'Dashboard')
 
 @section('content')
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">
-        Welcome
-      </h3>
-    </div>
-    <div class="card-body">
-      Welcome to Laravel starter.
-    </div>
-  </div>
-
-  {{-- Registered User --}}
-  @include('cms.registered_user')
+  {{-- SPP Payment - For All --}}
+  @include('cms._transactions')
+  @if(auth()->user()->role->name === "High Admin") 
+    {{-- Registered User - For Admin Only --}}
+    @include('cms._registered_user')
+  @endif
 @endsection
 
 @push('script')

@@ -62,6 +62,12 @@
                                     <p>Kelas</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('spp.index') }}" class="nav-link {{ Request::is('cms/master/spp') ? 'active' : '' }}">
+                                    <i class="far fa-clipboard nav-icon"></i>
+                                    <p>Spp</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endif

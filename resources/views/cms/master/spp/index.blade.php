@@ -1,20 +1,20 @@
 @extends('layouts.cms')
 
-@section('title', 'Kelas')
-@section('header-title', 'Kelas Management')
+@section('title', 'Spp')
+@section('header-title', 'Spp Management')
 
 @section('content')
   <div class="card">
     <div class="card-header">
       <div class="d-flex justify-content-between">
         <h3 class="card-title">
-          Kelas
+          Spp
         </h3>
         <a
-          href="{{ route('grades.create') }}"
+          href="{{ route('spp.create') }}"
           class="btn btn-sm btn-success btn-show-modal lg"
-          title="Buat Kelas Baru">
-          <em class="fas fa-plus"></em> Buat Kelas Baru
+          title="Buat SPP Baru">
+          <em class="fas fa-plus"></em> Buat Spp Baru
         </a>
       </div>
     </div>
@@ -24,7 +24,8 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Nama</th>
+              <th>Tahun</th>
+              <th>Nominal</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -41,10 +42,11 @@
               processing: true,
               responsive: true,
               serverSide: true,
-              ajax: "{{route('grades.datatables')}}",
+              ajax: "{{route('spp.datatables')}}",
               columns: [
                 {name: 'id', data: 'DT_RowIndex'},
-                {name: 'concat', data: 'concat'},
+                {name: 'year', data: 'year'},
+                {name: 'nominal', data: 'nominal'},
                 {name: 'action', data: 'action'}
               ]
           });

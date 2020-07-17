@@ -14,7 +14,9 @@ class UserSeeder extends Seeder
     {
         $userList = [
             ['High Admin', 'highadmin@gmail.com', \Hash::make('password'), 1],
-            ['Guest', 'guest@gmail.com', \Hash::make('password'), 2]
+            ['Guest', 'guest@gmail.com', \Hash::make('password'), 2],
+            ['Petugas', 'petugas@gmail.com', \Hash::make('password'), 3],
+            ['Siswa', 'siswa@gmail.com', \Hash::make('password'), 4]
         ];
 
         foreach($userList as $user) {

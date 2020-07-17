@@ -55,6 +55,10 @@ Route::group([
             // Grades
             Route::get('grades/datatables', 'GradeController@gradeDataTables')->name('grades.datatables');
             Route::resource('grades', 'GradeController');
+
+            // Spp
+            Route::get('spp/datatables', 'SppController@sppDataTables')->name('spp.datatables');
+            Route::resource('spp', 'SppController');
         });
     });
 });
