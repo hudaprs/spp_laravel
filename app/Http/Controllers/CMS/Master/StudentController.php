@@ -19,9 +19,9 @@ class StudentController extends Controller
         $this->middleware(function($request, $next) {
             if(Gate::allows('is_high_admin')) return $next($request);
             abort(403, config('globalvar.high_admin_gate_message'));
-        }, ['except' => ['studentsDataTables']]);
+        }, ['except' => ['studentsDataTables', 'studentDetail']]);
     }
-    
+
     public function studentDataTables(Request $request)
     {
         $students = Student::query();
@@ -46,6 +46,11 @@ class StudentController extends Controller
         } else {
             return response()->json(['message' => 'This request accept ajax only'], 400);
         }
+    }
+
+    public function studentDetail($id)
+    {
+        return Student::findOrFail($id);
     }
 
     public function studentRequest(Request $request, $id = null)

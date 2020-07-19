@@ -3,13 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 /**
-* CMS Route List
-*/
+ * CMS Route List
+ */
 Route::group([
     'prefix' => 'cms',
     'middleware' => 'auth',
     'namespace' => 'CMS'
-], function() {
+], function () {
     // Dashboard
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
@@ -18,11 +18,11 @@ Route::group([
      */
     Route::group([
         'namespace' => 'Master'
-    ], function() {
+    ], function () {
         // Users
         Route::group([
             'namespace' => 'Users'
-        ], function() {
+        ], function () {
             // Profile
             Route::get('users/{user}/profile', 'ProfileController@index')->name('users.profile');
             Route::put('users/{user}/profile', 'ProfileController@updateUserProfile')->name('users.profile-update');
@@ -36,7 +36,7 @@ Route::group([
             // Master Routes
             Route::group([
                 'prefix' => 'master'
-            ], function() {
+            ], function () {
                 // Users
                 Route::get('users/datatables', 'UserController@userDataTables')->name('users.datatables');
                 Route::resource('users', 'UserController');
@@ -46,7 +46,7 @@ Route::group([
         // Master List
         Route::group([
             'prefix' => 'master'
-        ], function() {
+        ], function () {
             // Roles
             Route::get('roles/datatables', 'RoleController@roleDataTables')->name('roles.datatables');
             Route::get('roles/all', 'RoleController@getRoles')->name('roles.all');
@@ -58,13 +58,19 @@ Route::group([
 
             // Spp
             Route::get('spp/datatables', 'SppController@sppDataTables')->name('spp.datatables');
+            Route::get('spp/detail/{id}', 'SppController@sppDetail')->name('spp.detail');
             Route::resource('spp', 'SppController');
 
             // Student
             Route::get('students/datatables', 'StudentController@studentDataTables')->name('students.datatables');
+            Route::get('students/detail/{id}', 'StudentController@studentDetail')->name('students.detail');
             Route::resource('students', 'StudentController');
         });
     });
+
+    // Payments
+    Route::get('payments/datatables', 'PaymentController@paymentDataTables')->name('payments.datatables');
+    Route::resource('payments', 'PaymentController');
 });
 
 Route::get('/', function () {

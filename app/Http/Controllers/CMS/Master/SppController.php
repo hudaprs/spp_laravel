@@ -17,9 +17,9 @@ class SppController extends Controller
         $this->middleware(function($request, $next) {
             if(Gate::allows('is_high_admin')) return $next($request);
             abort(403, config('globalvar.high_admin_gate_message'));
-        }, ['except' => ['sppDataTables']]);
+        }, ['except' => ['sppDataTables', 'sppDetail']]);
     }
-    
+
     public function sppDataTables(Request $request)
     {
         $spps = Spp::query();
@@ -44,6 +44,11 @@ class SppController extends Controller
         } else {
             return response()->json(['message' => 'This request accept ajax only'], 400);
         }
+    }
+
+    public function sppDetail($id)
+    {
+        return Spp::findOrFail($id);
     }
 
     public function sppRequest(Request $request, $id = null)

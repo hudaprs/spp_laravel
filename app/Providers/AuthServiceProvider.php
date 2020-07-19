@@ -35,5 +35,10 @@ class AuthServiceProvider extends ServiceProvider
             if($user->id !== $otherUser->id && $user->role->name === 'High Admin') return true;
             if($user->id === $otherUser->id) return true;
         });
+
+        // Only Admin and Petguas
+        Gate::define('admin_and_petugas', function($user) {
+            if($user->role->name === "High Admin" || $user->role->name === "Petugas") return true;
+        });
     }
 }
