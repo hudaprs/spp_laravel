@@ -30,12 +30,7 @@ class PaymentController extends Controller
         if ($request->ajax()) {
             return DataTables::of($payments)
                 ->addColumn('action', function ($payment) {
-                    return view('inc.cms._action', [
-                        'model' => $payment,
-                        'url_show' => route('payments.show', $payment->id),
-                        'url_edit' => route('payments.edit', $payment->id),
-                        'url_destroy' => route('payments.destroy', $payment->id)
-                    ]);
+                    return "<a href='/cms/payments/$payment->id' class='btn btn-sm btn-info'><em class='fas fa-eye'></em></a>" . " " . "<a href=\"/cms/payments/$payment->id\" class=\"btn btn-sm btn-danger btn-destroy\" title=\"Delete?\"><em class=\"fas fa-trash\"></em></a>";
                 })
                 ->addColumn('user', function ($payment) {
                     return $payment->user->name;
@@ -55,6 +50,12 @@ class PaymentController extends Controller
         } else {
             return response()->json(['message' => 'This request accept ajax only'], 400);
         }
+    }
+
+    public function paymentPDF($id)
+    {
+        $payment = Payment::with('user', 'student', 'spp')->findOrFail($id);
+        return view('cms.payments.print', compact('payment'));
     }
 
     public function paymentRequest(Request $request)
@@ -131,7 +132,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $oayment = Payment::findOrFail($id);
+        $payment = Payment::with('user', 'student', 'spp')->findOrFail($id);
         return view('cms.payments.show', compact('payment'));
     }
 

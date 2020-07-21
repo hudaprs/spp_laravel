@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /**
  * CMS Route List
  */
@@ -70,6 +71,7 @@ Route::group([
 
     // Payments
     Route::get('payments/datatables', 'PaymentController@paymentDataTables')->name('payments.datatables');
+    Route::get('payments/print/{id}', 'PaymentController@paymentPDF')->name('payments.print');
     Route::resource('payments', 'PaymentController');
 });
 
